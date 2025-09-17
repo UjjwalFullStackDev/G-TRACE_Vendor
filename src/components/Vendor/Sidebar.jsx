@@ -10,6 +10,7 @@ const Sidebar = () => {
 
   if (location.pathname.startsWith("/vendor")) {
     menuItems = [
+      { id: "home", icon: Home, label: "Home", path: "/vendors" },
       { id: "purchase", icon: ShoppingCart, label: "Purchase Entry", path: "/vendor/purchase" },
       { id: "requested", icon: Package, label: "Requested Stock", path: "/vendor/requested" },
       { id: "vendors", icon: Users, label: "Vendors", path: "/vendor/vendors" },
@@ -17,8 +18,8 @@ const Sidebar = () => {
   } else if (location.pathname.startsWith("/stock")) {
     menuItems = [
       { id: "home", icon: Home, label: "Home", path: "/stocks" },
-      // { id: "stockDetails", icon: Boxes, label: "Stock Details", path: "/stocks" },
       { id: "addStock", icon: ShoppingCart, label: "Add Stock", path: "/stocks/purchase" },
+      { id: "stockExpected", icon: Boxes, label: "Stock Expected", path: "/stocks/expected" },
     ];
   } else {
     // Default / home sidebar
@@ -34,7 +35,7 @@ const Sidebar = () => {
           key={id}
           to={path}
           className={({ isActive }) =>
-            `flex flex-col items-center mb-6 px-2 py-2 rounded-lg transition-colors ${isActive ? "bg-cyan-900 text-white" : "text-gray-300 hover:bg-cyan-900"
+            `flex flex-col items-center mb-6 px-2 py-2 rounded-lg transition-colors ${isActive ? "bg-cyan-900" : "hover:bg-cyan-800"
             }`
           }
         >

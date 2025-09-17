@@ -4,7 +4,7 @@ import { SquarePlus, Trash2 } from "lucide-react";
 
 const gstRate = 0.18; // 18% GST
 
-export default function PurchaseEntry({ vendors = [], isLoading, isError, addRequest  }) {
+export default function PurchaseEntry({ vendors = [], isLoading, isError }) {
   const { register, control, handleSubmit, watch, setValue } = useForm({
     defaultValues: {
       products: [
@@ -27,7 +27,7 @@ export default function PurchaseEntry({ vendors = [], isLoading, isError, addReq
 
   const products = watch("products");
 
-
+  // ---- Update amounts and GST for all products ----
 React.useEffect(() => {
   products.forEach((product, index) => {
     const units = parseFloat(product.units) || 0;
@@ -54,20 +54,8 @@ React.useEffect(() => {
   }, 0);
 
   const onSubmit = (data) => {
-    const requestData = {
-    products: data.products.map((p) => ({
-      vendor: vendors.find((v) => v.id === p.vendorId)?.name,
-      name: p.productName,
-      unit: vendors.find((v) => v.id === p.vendorId)?.products.find((prod) => prod.name === p.productName)?.unit || "",
-      qty: parseFloat(p.units),
-      rate: parseFloat(p.rate),
-    })),
-    totalAmount,
-    status: "Pending at Admin",
-  };
-
-  addRequest(requestData);
-  alert("Request added successfully!");
+    console.log("Submitted Data:", data);
+    alert("Form submitted! Check console.");
   };
 
   if (isLoading) return <p className="p-4">Loading vendors...</p>;
@@ -95,8 +83,15 @@ React.useEffect(() => {
 
         {/* Rows */}
         {fields.map((field, index) => {
-          const { amount, gstAmount } = products[index] || { amount: 0, gstAmount: 0 };
-          const selectedVendor = vendors.find((v) => v.id === products[index]?.vendorId);
+          const { amount, gstAmount } = calculateAmount(
+            products[index]?.units,
+            products[index]?.rate
+          );
+
+          // find vendor of this row
+          const selectedVendor = vendors.find(
+            (v) => v.id === products[index]?.vendorId
+          );
 
           return (
             <div

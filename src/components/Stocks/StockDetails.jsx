@@ -28,7 +28,7 @@ const StockDetails = () => {
         <div className="bg-white rounded-lg p-6 shadow-sm text-center">
           <p className="text-gray-600">Request not found.</p>
           <button
-            onClick={() => navigate("/stocks/requested")}
+            onClick={() => navigate("/stocks")}
             className="mt-4 bg-cyan-800 text-white px-4 py-2 rounded text-sm font-medium hover:bg-cyan-900"
           >
             Back to Requests
@@ -52,7 +52,7 @@ const StockDetails = () => {
         <div className="bg-cyan-800 text-white px-4 py-3 flex justify-between items-center">
           <span className="font-medium">Product Details</span>
           <button
-            onClick={() => navigate("/stocks/requested")}
+            onClick={() => navigate("/stocks")}
             className="btn-secondary"
           >
             Back to Requests

@@ -2,6 +2,7 @@ import { useState } from "react";
 import PurchaseEntry from "../../components/Stocks/PurchaseEntry";
 import RequestedStock from "../../components/Stocks/RequestedStock";
 import StockDetails from "../../components/Stocks/StockDetails";
+import ExpectedStock from "../../components/Stocks/ExpectedStock";
 
 function StockProvider({ children }) {
 
@@ -143,6 +144,14 @@ const StockRoutes = [
     element: (
       <StockProvider>
         {({ requests }) => <StockDetails requests={requests} />}
+      </StockProvider>
+    ),
+  },
+  {
+    path: "expected",
+    element: (
+      <StockProvider>
+        {({ requests }) => <ExpectedStock requests={requests} />}
       </StockProvider>
     ),
   },
