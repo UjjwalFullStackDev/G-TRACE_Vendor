@@ -9,8 +9,8 @@ export default function PurchaseEntry({ vendors = [], isLoading, isError }) {
     defaultValues: {
       products: [
         {
-          productName: "",
           vendorId: "",
+          productName: "",
           units: "",
           rate: "",
           amount: 0,
@@ -71,9 +71,9 @@ React.useEffect(() => {
       >
         {/* Header */}
         <div className="grid grid-cols-7 gap-8 font-semibold text-center pb-2 mb-2 text-sm text-gray-600">
+          <span>Vendor Name</span>
           <span>Choose Material</span>
           <span>Units</span>
-          <span>Vendor Name</span>
           <span>Rate (per unit)</span>
           <span>Amount (exc.)</span>
           <span>Amount with GST</span>
@@ -98,6 +98,21 @@ React.useEffect(() => {
               key={field.id}
               className="grid grid-cols-7 gap-8 items-center text-center mb-3 text-sm"
             >
+              {/* Vendor Dropdown */}
+              <select
+                {...register(`products.${index}.vendorId`, {
+                  required: "Vendor required",
+                })}
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm"
+              >
+                <option value="">Select Vendor</option>
+                {vendors.map((v) => (
+                  <option key={v.id} value={v.id}>
+                    {v.name}
+                  </option>
+                ))}
+              </select>
+
               {/* Product Dropdown (depends on vendor) */}
               <select
                 {...register(`products.${index}.productName`, {
@@ -135,21 +150,6 @@ React.useEffect(() => {
                 })}
                 className="px-3 py-2 border border-gray-300 rounded-md text-sm"
               />
-
-              {/* Vendor Dropdown */}
-              <select
-                {...register(`products.${index}.vendorId`, {
-                  required: "Vendor required",
-                })}
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm"
-              >
-                <option value="">Select Vendor</option>
-                {vendors.map((v) => (
-                  <option key={v.id} value={v.id}>
-                    {v.name}
-                  </option>
-                ))}
-              </select>
 
               {/* Rate */}
               <input

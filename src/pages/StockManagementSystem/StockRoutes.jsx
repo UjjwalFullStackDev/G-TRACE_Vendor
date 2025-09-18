@@ -3,102 +3,53 @@ import PurchaseEntry from "../../components/Stocks/PurchaseEntry";
 import RequestedStock from "../../components/Stocks/RequestedStock";
 import StockDetails from "../../components/Stocks/StockDetails";
 import ExpectedStock from "../../components/Stocks/ExpectedStock";
+import { branchStockSummary, configuredStockSummery, manufacturerStockSummary, receivedStockSummary, sampleRequests, sampleVendors, stockSummary } from "../../constants";
+import ExpectedStockDetails from "../../components/Stocks/ExpectedStockDetails";
+import ExpectedStockBranch from "../../components/Stocks/ExpectedStockBranch";
+import ExpectedStockManufacture from "../../components/Stocks/ExpectedStockManufacture";
+import ReceivedStock from "../../components/Stocks/ReceivedStock";
+import ConfiguredStock from "../../components/Stocks/ConfiguredStock";
 
 function StockProvider({ children }) {
 
-  const sampleVendors = [
-    {
-      id: "v1",
-      name: "Steel Traders",
-      products: [
-        { id: "p1", name: "Steel Rod", rate: 120, unit: "Kg", minOrderQty: 50 },
-        { id: "p2", name: "Iron Sheet", rate: 250, unit: "Sheet", minOrderQty: 10 },
-      ],
-    },
-    {
-      id: "v2",
-      name: "Electricals Hub",
-      products: [
-        { id: "p3", name: "Motor", rate: 5000, unit: "Pcs", minOrderQty: 2 },
-        { id: "p4", name: "Solenoid Coil", rate: 1200, unit: "Pcs", minOrderQty: 5 },
-      ],
-    },
-    {
-      id: "v3",
-      name: "Furniture Hub",
-      products: [
-        { id: "p5", name: "Wooden Chair", rate: 1500, unit: "Pcs", minOrderQty: 4 },
-        { id: "p6", name: "Office Table", rate: 3200, unit: "Pcs", minOrderQty: 2 },
-      ],
-    },
-  ];
-
-
   const [vendors, setVendors] = useState(sampleVendors);
-  const [requests, setRequests] = useState([{
-    id: 1,
-    orderDate: "10 Jan, 2025",
-    productOrder: 4,
-    qtyTaken: 4,
-    totalAmount: 14200,
-    status: "Pending at Admin",
-    products: [
-      { name: "Steel Rod", units: 2, rate: 1500 },
-      { name: "Cement Bag", units: 2, rate: 5000 },
-    ],
-  },
-  {
-    id: 2,
-    orderDate: "11 Jan, 2025",
-    productOrder: 15,
-    qtyTaken: 15,
-    totalAmount: 16000,
-    status: "Pending at Account",
-    products: [
-      { name: "Bricks", units: 10, rate: 800 },
-      { name: "Sand", units: 5, rate: 800 },
-    ],
-  },
-  {
-    id: 3,
-    orderDate: "12 Jan, 2025",
-    productOrder: 8,
-    qtyTaken: 8,
-    totalAmount: 2000,
-    status: "Pending at Account",
-    products: [
-      { name: "Paint Bucket", units: 4, rate: 200 },
-      { name: "Brush Set", units: 4, rate: 300 },
-    ],
-  },
-  {
-    id: 4,
-    orderDate: "12 Jan, 2025",
-    productOrder: 8,
-    qtyTaken: 8,
-    totalAmount: 2000,
-    status: "Pending at Account",
-    products: [
-      { name: "Tiles", units: 8, rate: 250 },
-    ],
-  },]);
+  const [requests, setRequests] = useState(sampleRequests);
+  const [expectedStocks, setExpectedStocks] = useState(stockSummary);
+  const [branchStocks, setBranchStocks] = useState(branchStockSummary);
+  const [manufacturerStocks, setManufacturerStocks] = useState(manufacturerStockSummary);
+  const [receivedStocks, setReceivedStocks] = useState(receivedStockSummary);
+  const [configuredStocks, setConfiguredStocks] = useState(configuredStockSummery);
+  const [selectedRequestId, setSelectedRequestId] = useState(null);
+  const [showAddProductModal, setShowAddProductModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  const addRequest = (requestData) => {
+ const addRequest = (requestData) => {
     const newRequest = {
       id: requests.length + 1,
-      orderDate: new Date().toLocaleDateString('en-GB', { 
-        day: 'numeric', 
-        month: 'short', 
-        year: 'numeric' 
+      orderDate: new Date().toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
       }),
-      productOrder: requestData.products.length,
-      qtyTaken: requestData.products.reduce((sum, p) => sum + p.qty, 0),
-      ...requestData
+      status: "Pending at Admin",
+      products: requestData.products,
     };
-    setRequests(prev => [...prev, newRequest]);
+    setRequests((prev) => [...prev, newRequest]);
   };
+
+  const handleViewRequestsStock = (requestId) => {
+    setSelectedRequestId(requestId);
+  };
+
+  const handleViewExpectedStock = (expectedStocksRequestId) => {
+    setSelectedRequestId(expectedStocksRequestId);
+  };
+
+  const handleClose = () => {
+    setSelectedRequestId(null);
+  };
+
   return (
     <>
       {children({
@@ -106,9 +57,25 @@ function StockProvider({ children }) {
         setVendors,
         requests,
         setRequests,
+        expectedStocks,
+        setExpectedStocks,
+        branchStocks,
+        setBranchStocks,
+        manufacturerStocks,
+        setManufacturerStocks,
+        receivedStocks,
+        setReceivedStocks,
+        configuredStocks,
+        setConfiguredStocks,
+        showAddProductModal,
+        setShowAddProductModal,
+        handleViewRequestsStock,
+        handleViewExpectedStock,
+        handleClose,      
         addRequest,
         isLoading,
         isError,
+        selectedRequestId,
       })}
     </>
   );
@@ -120,7 +87,17 @@ const StockRoutes = [
     index: true,
     element: (
       <StockProvider>
-        {({ requests }) => <RequestedStock requests={requests} />}
+        {({ requests, handleViewRequestsStock, selectedRequestId, handleClose }) => (
+          <>
+            <RequestedStock requests={requests} handleViewRequestsStock={handleViewRequestsStock} />
+            {selectedRequestId && (
+              <StockDetails
+                request={requests.find((r) => r.id === selectedRequestId)}
+                onClose={handleClose}
+              />
+            )}
+          </>
+        )}
       </StockProvider>
     ),
   },
@@ -140,18 +117,77 @@ const StockRoutes = [
     ),
   },
   {
-    path: "stock-details/:requestId",
+    path: "expected",
     element: (
       <StockProvider>
-        {({ requests }) => <StockDetails requests={requests} />}
+        {({ expectedStocks, handleViewExpectedStock, selectedRequestId, handleClose }) => (
+          <>
+          <ExpectedStock expectedStocks={expectedStocks} handleViewExpectedStock={handleViewExpectedStock} />
+          {selectedRequestId && (
+            <ExpectedStockDetails 
+              expectedStock={expectedStocks.find((s) => s.id === selectedRequestId)}
+              onClose={handleClose}
+          />)}
+          </>
+        )}
       </StockProvider>
     ),
   },
   {
-    path: "expected",
+    path: "expected/branches",
     element: (
       <StockProvider>
-        {({ requests }) => <ExpectedStock requests={requests} />}
+        {({ branchStocks, handleViewExpectedStock, selectedRequestId, handleClose }) => (
+          <>
+          <ExpectedStockBranch branchStocks={branchStocks} handleViewExpectedStock={handleViewExpectedStock} />
+          {selectedRequestId && (
+            <ExpectedStockDetails 
+              branchStock={branchStocks.find((b) => b.id === selectedRequestId)}
+              onClose={handleClose}
+          />)}
+          </>
+        )}
+      </StockProvider>
+    ),
+  },
+  {
+    path: "expected/manufacturer",
+    element: (
+      <StockProvider>
+        {({ manufacturerStocks, handleViewExpectedStock, selectedRequestId, handleClose }) => (
+          <>
+          <ExpectedStockManufacture manufacturerStocks={manufacturerStocks} handleViewExpectedStock={handleViewExpectedStock} />
+          {selectedRequestId && (
+            <ExpectedStockDetails 
+              manufacturerStock={manufacturerStocks.find((m) => m.id === selectedRequestId)}
+              onClose={handleClose}
+          />)}
+          </>
+        )}
+      </StockProvider>
+    ),
+  },
+  {
+    path: "received-stocks",
+    element: (
+      <StockProvider>
+        {({ receivedStocks }) => (
+          <>
+          <ReceivedStock receivedStocks={receivedStocks} />
+          </>
+        )}
+      </StockProvider>
+    ),
+  },
+  {
+    path: "configured-stocks",
+    element: (
+      <StockProvider>
+        {({ configuredStocks, setConfiguredStocks }) => (
+          <>
+          <ConfiguredStock configuredStocks={configuredStocks} setConfiguredStocks={setConfiguredStocks}/>
+          </>
+        )}
       </StockProvider>
     ),
   },

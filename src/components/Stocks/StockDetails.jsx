@@ -1,42 +1,9 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { X } from "lucide-react";
 
 const gstRate = 0.18;
 
-const sampleRequests = [
-  {
-    id: 1,
-    orderDate: "10 Jan, 2025",
-    status: "Pending at Admin",
-    products: [
-      { vendor: "Dashmesh 1051", name: "Cutting Blade", unit: "pcs", qty: 50, rate: 10 },
-      { vendor: "Dashmesh 1051", name: "Wrinch 14*15", unit: "pcs", qty: 10, rate: 40 },
-      { vendor: "Dashmesh 1051", name: "Wrinch 14*15", unit: "pcs", qty: 10, rate: 40 },
-      { vendor: "Dashmesh 1051", name: "Wrinch 14*15", unit: "pcs", qty: 10, rate: 40 },
-    ],
-  },
-];
-
-const StockDetails = () => {
-  const { requestId } = useParams();
-  const navigate = useNavigate();
-  const id = parseInt(requestId, 10);
-
-  const request = sampleRequests.find((r) => r.id === id);
-  if (!request) {
-    return (
-      <div className="min-h-screen bg-gray-100 p-6 flex items-center justify-center">
-        <div className="bg-white rounded-lg p-6 shadow-sm text-center">
-          <p className="text-gray-600">Request not found.</p>
-          <button
-            onClick={() => navigate("/stocks")}
-            className="mt-4 bg-cyan-800 text-white px-4 py-2 rounded text-sm font-medium hover:bg-cyan-900"
-          >
-            Back to Requests
-          </button>
-        </div>
-      </div>
-    );
-  }
+const StockDetails = ({ request, onClose }) => {
+  if (!request) return null;
 
   const totalAmount = request.products.reduce(
     (sum, p) => sum + p.qty * p.rate * (1 + gstRate),
@@ -44,71 +11,85 @@ const StockDetails = () => {
   );
 
   return (
-    <div className="min-h-screen p-6">
-      <h1 className="text-3xl font-bold mb-6">Stock Details - Order #{request.id}</h1>
-
-      <div className="bg-white rounded-lg shadow-sm overflow-hidden">
+    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
+      <div className="bg-white rounded-2xl w-[85%] max-w-6xl shadow-2xl overflow-hidden">
         {/* Header */}
-        <div className="bg-cyan-800 text-white px-4 py-3 flex justify-between items-center">
-          <span className="font-medium">Product Details</span>
+        <div className="flex justify-between items-center px-6 py-4 border-b bg-gray-50">
+          <h3 className="text-xl font-semibold text-gray-800">
+            Order Date – {request.orderDate}
+          </h3>
           <button
-            onClick={() => navigate("/stocks")}
-            className="btn-secondary"
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100"
           >
-            Back to Requests
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Products Header */}
-        <div className="px-4 py-3 bg-gray-100 border-b">
-          <div className="grid grid-cols-8 gap-4 text-sm text-center font-medium text-gray-600">
-            <div>Vendor</div>
-            <div>Product Name</div>
-            <div>Unit</div>
-            <div>Qty</div>
-            <div>Rate</div>
-            <div>Amount</div>
-            <div>Amount w/ GST</div>
-            <div>Status</div>
-          </div>
+        {/* Products Table Header */}
+        <div className="grid grid-cols-8 gap-4 px-6 py-3 bg-gray-100 text-sm text-center font-medium text-gray-600 border-b">
+          <div>Vendor</div>
+          <div>Product</div>
+          <div>Unit</div>
+          <div>Qty</div>
+          <div>Rate</div>
+          <div>Amount</div>
+          <div>Amount + GST</div>
+          <div>Status</div>
         </div>
 
         {/* Products List */}
-        <div className="overflow-x-auto">
+        <div className="max-h-[400px] overflow-y-auto">
           {request.products.map((p, idx) => {
             const amount = p.qty * p.rate;
             const gstAmount = amount * (1 + gstRate);
             return (
               <div
                 key={idx}
-                className="grid grid-cols-8 gap-4 px-4 py-3 text-sm text-center text-gray-900 border-b hover:bg-gray-50"
+                className="grid grid-cols-8 gap-4 px-6 py-3 text-sm text-gray-900 border-b hover:bg-gray-50 text-center"
               >
                 <div>{p.vendor}</div>
                 <div>{p.name}</div>
                 <div>{p.unit}</div>
                 <div>{p.qty}</div>
                 <div>₹ {p.rate}</div>
-                <div>₹ {amount}</div>
-                <div>₹ {gstAmount}</div>
-                <div className="px-2 py-1 text-xs font-medium rounded bg-orange-100 text-orange-700">{request.status}</div>
+                <div>₹ {amount.toLocaleString()}</div>
+                <div>₹ {gstAmount.toLocaleString()}</div>
+                <div>
+                  <span
+                    className={`px-3 py-1 text-xs font-medium rounded-full ${
+                      request.status === "Pending at Admin"
+                        ? "bg-orange-100 text-orange-700"
+                        : request.status === "Delivered"
+                        ? "bg-green-100 text-green-700"
+                        : request.status === "In Transit"
+                        ? "bg-blue-100 text-blue-700"
+                        : "bg-gray-100 text-gray-700"
+                    }`}
+                  >
+                    {request.status}
+                  </span>
+                </div>
               </div>
             );
           })}
+
           {request.products.length === 0 && (
-            <div className="px-4 py-8 text-center text-gray-500">
+            <div className="px-6 py-8 text-center text-gray-500">
               No products found in this request.
             </div>
           )}
         </div>
+
         {/* Order Summary */}
-        <div className="px-4 py-3 bg-gray-50 border-b">
-          <div className="flex flec justify-end items-center gap-4 text-sm">
-              <div className="font-medium text-gray-600">Total Amount</div>
-              <div className="px-4 py-2 border-0 rounded-md bg-blue-100 font-bold text-cyan-800">₹ {totalAmount}</div>
-            </div>
+        <div className="px-6 py-4 bg-gray-50 flex justify-end items-center gap-6 border-t">
+          <div className="text-sm font-medium text-gray-600">Total Amount</div>
+          <div className="px-6 py-2 rounded-lg bg-cyan-100 text-cyan-800 font-bold text-lg">
+            ₹ {totalAmount.toLocaleString()}
           </div>
         </div>
       </div>
+    </div>
   );
 };
 

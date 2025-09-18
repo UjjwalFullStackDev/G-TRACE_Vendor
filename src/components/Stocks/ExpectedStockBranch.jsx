@@ -2,7 +2,7 @@ import { Search } from "lucide-react";
 import { useState, useMemo } from "react";
 import TopCardsSection from "./TopCardsSection";
 
-export default function ExpectedStock({ expectedStocks, handleViewExpectedStock }) {
+export default function ExpectedStockBranch({ branchStocks, handleViewExpectedStock }) {
 
   // local states for filtering/sorting
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,7 +16,7 @@ export default function ExpectedStock({ expectedStocks, handleViewExpectedStock 
 
   // filtered + sorted data
   const filteredRequests = useMemo(() => {
-  let data = [...expectedStocks];
+  let data = [...branchStocks];
 
   if (searchTerm.trim() !== "") {
     data = data.filter((req) => {
@@ -39,7 +39,7 @@ export default function ExpectedStock({ expectedStocks, handleViewExpectedStock 
   }
 
   return data;
-}, [expectedStocks, searchTerm, sortByDate]);
+}, [branchStocks, searchTerm, sortByDate]);
 
 
   return (
@@ -77,11 +77,9 @@ export default function ExpectedStock({ expectedStocks, handleViewExpectedStock 
           <table className="w-full text-sm text-center border-collapse">
             <thead className="bg-gray-50 border-b text-gray-600 font-semibold">
               <tr>
-                <th className="px-4 py-3">Name</th>
+                <th className="px-4 py-3">Branch</th>
                 <th className="px-4 py-3">Total Products</th>
                 <th className="px-4 py-3">Units of Products</th>
-                <th className="px-4 py-3">Given Date</th>
-                <th className="px-4 py-3">Accepted Date</th>
                 <th className="px-4 py-3">View Details</th>
               </tr>
             </thead>
@@ -92,11 +90,9 @@ export default function ExpectedStock({ expectedStocks, handleViewExpectedStock 
                     key={req.id}
                     className="border-b hover:bg-gray-50 transition"
                   >
-                    <td className="px-4 py-3">{req.name}</td>
+                    <td className="px-4 py-3">{req.branch}</td>
                     <td className="px-4 py-3">{req.totalProducts}</td>
                     <td className="px-4 py-3">{req.units}</td>
-                    <td className="px-4 py-3 font-medium">₹ {req.givenDate}</td>
-                    <td className="px-4 py-3 font-medium">₹ {req.acceptedDate}</td>
                     <td className="px-4 py-3">
                       <button
                         className="text-cyan-800 bg-cyan-100 py-1 px-4 rounded-md hover:text-white hover:bg-cyan-800 font-medium text-sm cursor-pointer"
