@@ -9,6 +9,7 @@ import ExpectedStockBranch from "../../components/Stocks/ExpectedStockBranch";
 import ExpectedStockManufacture from "../../components/Stocks/ExpectedStockManufacture";
 import ReceivedStock from "../../components/Stocks/ReceivedStock";
 import ConfiguredStock from "../../components/Stocks/ConfiguredStock";
+import StocksDashboard from "../../components/Stocks/StocksDashboard";
 
 function StockProvider({ children }) {
 
@@ -87,6 +88,18 @@ const StockRoutes = [
     index: true,
     element: (
       <StockProvider>
+        {() => (
+          <>
+            <StocksDashboard  />
+          </>
+        )}
+      </StockProvider>
+    ),
+  },
+  {
+    path: "requested-stocks",
+    element: (
+      <StockProvider>
         {({ requests, handleViewRequestsStock, selectedRequestId, handleClose }) => (
           <>
             <RequestedStock requests={requests} handleViewRequestsStock={handleViewRequestsStock} />
@@ -102,7 +115,7 @@ const StockRoutes = [
     ),
   },
   {
-    path: "purchase",
+    path: "purchase-stocks",
     element: (
       <StockProvider>
         {({ vendors, isLoading, isError, addRequest }) => (
@@ -117,7 +130,7 @@ const StockRoutes = [
     ),
   },
   {
-    path: "expected",
+    path: "expected-stocks",
     element: (
       <StockProvider>
         {({ expectedStocks, handleViewExpectedStock, selectedRequestId, handleClose }) => (
