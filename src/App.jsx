@@ -4,6 +4,12 @@ import VendorRoutes from "./pages/VendorManagementSystem/VendorRoutes";
 import ErrorPage from "./pages/ErrorPage";
 import StockrManagementSystem from "./pages/StockManagementSystem/StockManagementSystem";
 import StockRoutes from "./pages/StockManagementSystem/StockRoutes";
+import SalesManagementSystes from "./pages/SalesManagementSystem/SalesManagementSystem";
+import SalesLogin from "./components/Sales/SalesLogin";
+import CceLogin from "./components/Cce/CceLogin";
+import CceManagementSystem from "./pages/CceManagementSystem/CceManagementSystem";
+import SalesRoutes from "./pages/SalesManagementSystem/SalesRoutes";
+import CceRoutes from "./pages/CceManagementSystem/CceRoutes";
 
 function App() {
   const router = createBrowserRouter([
@@ -21,7 +27,7 @@ function App() {
     },
     {
       path: "/sales",
-      element: <SalesManagementSystem />,
+      element: <SalesManagementSystes />,
       children: SalesRoutes,
       errorElement: <ErrorPage />,
     },
