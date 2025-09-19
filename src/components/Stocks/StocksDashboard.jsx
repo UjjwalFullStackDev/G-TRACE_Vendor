@@ -9,7 +9,6 @@ const DashboardCard = ({ title, icon: Icon, iconColor, children }) => (
       </div>
       <MoreHorizontal className="w-4 h-4 text-gray-400 cursor-pointer" />
     </div>
-    {/* no padding here, just divide */}
     <div className="bg-light-blue-100 rounded-md divide-y divide-cyan-200">
       {children}
     </div>

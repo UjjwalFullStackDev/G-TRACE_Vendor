@@ -14,7 +14,7 @@ const VendorList = ({ vendors, setSelectedVendor, setShowAddProductModal }) => {
               Vendor List
             </button>
             <button
-              onClick={() => navigate('/vendors/add')}
+              onClick={() => navigate('/vendors/add-vendor')}
               className="btn-secondary"
             >
               Add New Vendor

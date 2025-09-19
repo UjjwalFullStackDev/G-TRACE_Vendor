@@ -139,7 +139,7 @@ const VendorRoutes = [
     ),
   },
   {
-    path: "add",
+    path: "add-vendor",
     element: (
       <VendorProvider>
         {({ handleAddVendor }) => <AddVendor handleAddVendor={handleAddVendor} />}
