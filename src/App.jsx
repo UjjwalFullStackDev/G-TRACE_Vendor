@@ -19,6 +19,28 @@ function App() {
       errorElement: <ErrorPage />,
       children: StockRoutes,
     },
+    {
+      path: "/sales",
+      element: <SalesManagementSystem />,
+      children: SalesRoutes,
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "/login",
+      element: <SalesLogin />,
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "/cce-login",
+      element: <CceLogin />,
+      errorElement: <ErrorPage />,
+    },
+    {
+      path: "/cce",
+      element: <CceManagementSystem />,
+      children: CceRoutes,
+      errorElement: <ErrorPage />,
+    },
   ]);
 
   return <RouterProvider router={router} />;

@@ -38,7 +38,8 @@ export default function StocksDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Pending Material Request */}
             <DashboardCard
-              title="Pending Material Request" 
+            //   title="Pending Material Request" 
+              title="Request" 
               icon={Package} 
               iconColor="text-blue-500"
             >
