@@ -81,29 +81,29 @@ export default function ConfiguredStock({ configuredStocks, setConfiguredStocks 
       <h1 className="text-3xl font-bold text-gray-900">Configured Stock</h1>
       <div className="bg-white rounded-lg shadow-sm overflow-hidden">
         {/* Header with Select All and Submit buttons */}
-        <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+        <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-white">
+          {/* Left Section */}
           <div className="flex items-center gap-4">
-            <button
-              onClick={handleSelectAll}
-              className="btn-secondary"
-            >
+            <button onClick={handleSelectAll} className="btn-secondary">
               Select All
             </button>
           </div>
-          <div className="flex items-center gap-2">
+
+          {/* Right Section */}
+          <div className="flex items-center gap-3">
             {/* Dropdown 1 - Action */}
-            <div className="relative inline-block text-left">
+            <div className="relative">
               <button
                 onClick={() => setOpenAction(!openAction)}
-                className="btn-secondary flex gap-1"
+                className="btn-secondary flex items-center gap-2"
               >
-                Select action
-                <ChevronDown className="ml-2 h-4 w-4 mt-1" />
+                Select Action
+                <ChevronDown className="h-4 w-4" />
               </button>
 
               {openAction && (
-                <div className="absolute mt-2 w-full bg-white border rounded-md shadow-lg">
-                  <ul className="py-1">
+                <div className="absolute right-0 mt-2 min-w-[150px] bg-white border rounded-md shadow-lg z-50">
+                  <ul className="py-1 text-sm">
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Edit</li>
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Delete</li>
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">View</li>
@@ -113,18 +113,18 @@ export default function ConfiguredStock({ configuredStocks, setConfiguredStocks 
             </div>
 
             {/* Dropdown 2 - Name */}
-            <div className="relative inline-block text-left">
+            <div className="relative">
               <button
                 onClick={() => setOpenName(!openName)}
-                className="btn-secondary flex gap-1"
+                className="btn-secondary flex items-center gap-2"
               >
                 Select Name
-                <ChevronDown className="ml-2 mt-1 h-4 w-4" />
+                <ChevronDown className="h-4 w-4" />
               </button>
 
               {openName && (
-                <div className="absolute mt-2 w-full bg-white border rounded-md shadow-lg">
-                  <ul className="py-1">
+                <div className="absolute right-0 mt-2 min-w-[150px] bg-white border rounded-md shadow-lg z-50">
+                  <ul className="py-1 text-sm">
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">John</li>
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Alice</li>
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Michael</li>
@@ -132,20 +132,23 @@ export default function ConfiguredStock({ configuredStocks, setConfiguredStocks 
                 </div>
               )}
             </div>
-            <button
-              className="btn-secondary mx-2"
-            >
-              Submit
-            </button>
 
-            <div className="flex items-center border rounded-md px-2">
-              <Search className="w-5 h-5 text-gray-600" />
+            {/* Submit */}
+            <button className="btn-secondary">Submit</button>
+
+            {/* Search Box */}
+            <div className="relative w-60">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search..."
-                className="p-2 text-sm focus:outline-none"
+                size={5}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-10 pr-4 py-2 text-sm rounded-lg border border-gray-300 
+                   focus:border-cyan-500 focus:ring focus:ring-cyan-200 
+                   outline-none transition-all duration-300 
+                   placeholder-gray-400 shadow-sm"
               />
             </div>
           </div>

@@ -1,16 +1,15 @@
 import { NavLink, useLocation } from "react-router-dom";
 import {
   ShoppingCart,
-  Package,
-  Users,
   Home,
   PackageCheck,
-  Package2,
   ClipboardList,
   PackagePlus,
   ChevronLeft,
   ChevronRight,
   UserPlus,
+  LayoutDashboard,
+  Boxes,
 } from "lucide-react";
 
 const Sidebar = ({ expanded, setExpanded }) => {
@@ -30,7 +29,7 @@ const Sidebar = ({ expanded, setExpanded }) => {
       { id: "addStock", icon: ShoppingCart, label: "Add Stock", path: "/stocks/purchase-stocks" },
       { id: "stockExpected", icon: PackagePlus, label: "Stock Expected", path: "/stocks/expected-stocks" },
       { id: "receivedStock", icon: PackageCheck, label: "Received Stock", path: "/stocks/received-stocks" },
-      { id: "configuredStock", icon: Package2, label: "Configured Stock", path: "/stocks/configured-stocks" },
+      { id: "configuredStock", icon: Boxes, label: "Configured Stock", path: "/stocks/configured-stocks" },
     ];
   } else {
     menuItems = [{ id: "home", icon: Home, label: "Home", path: "/" }];
@@ -45,8 +44,8 @@ const Sidebar = ({ expanded, setExpanded }) => {
       {/* Header Section */}
       <div className="p-4 border-b border-cyan-700/50">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-cyan-600 rounded-md flex items-center justify-center shadow-lg">
-            <Package2 className="w-6 h-6 text-white" />
+          <div className="w-8 h-8 p-1 bg-cyan-600 rounded-md flex items-center justify-center shadow-lg">
+            <LayoutDashboard className="w-6 h-6 text-white" />
           </div>
           <div className={`transition-all duration-500 ${expanded ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'} overflow-hidden`}>
             {expanded && (
@@ -109,10 +108,9 @@ const Sidebar = ({ expanded, setExpanded }) => {
       <div className="p-4 mb-16 border-t border-cyan-700/50 bg-cyan-800/50">
         <button
           onClick={() => setExpanded((prev) => !prev)}
-          className="w-full flex items-center justify-center gap-3 px-2 py-3 rounded-md
-                   hover:bg-cyan-700/60 transition-all duration-300 transform hover:scale-105
-                   focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-opacity-50
-                   group shadow-lg"
+          className={`w-full flex items-center rounded-md px-2 py-3 transition-all duration-300 transform hover:scale-105
+                   hover:bg-cyan-700/60 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-opacity-50
+                   group shadow-lg ${expanded ? "justify-start gap-3" : "justify-center"}`}
         >
           <div className="transition-transform duration-300 group-hover:rotate-180">
             {expanded ? (
