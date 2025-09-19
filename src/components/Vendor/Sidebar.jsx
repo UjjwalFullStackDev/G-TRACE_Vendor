@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { ShoppingCart, Package, Users, Home, Boxes, PackageCheck, Package2, ClipboardList } from "lucide-react";
+import { ShoppingCart, Package, Users, Home, PackageCheck, Package2, ClipboardList, PackagePlus } from "lucide-react";
 
 const Sidebar = () => {
 
@@ -20,7 +20,7 @@ const Sidebar = () => {
       { id: "home", icon: Home, label: "Home", path: "/stocks" },
       { id: "requestedStock", icon: ClipboardList, label: "Requested Stocks", path: "/stocks/requested-stocks" },
       { id: "addStock", icon: ShoppingCart, label: "Add Stock", path: "/stocks/purchase-stocks" },
-      { id: "stockExpected", icon: Boxes, label: "Stock Expected", path: "/stocks/expected-stocks" },
+      { id: "stockExpected", icon: PackagePlus, label: "Stock Expected", path: "/stocks/expected-stocks" },
       { id: "receivedStock", icon: PackageCheck, label: "Stock Received", path: "/stocks/received-stocks" },
       { id: "configuredStock", icon: Package2, label: "Stock Configured", path: "/stocks/configured-stocks" },
     ];
